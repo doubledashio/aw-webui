@@ -114,6 +114,7 @@ const mutations = {
         cur.name = [obj.value.unicode, ...cur.name];
       }
 
+      cur.id = +cur.id;
       cur.children = sub ? sub.filter(sc => sc.parent == cur.id) : [];
 
       return cur;
