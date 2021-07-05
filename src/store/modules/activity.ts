@@ -169,9 +169,12 @@ const actions = {
     }
   },
 
-  async query_android({ state, commit }, { timeperiod, filterCategories }: QueryOptions) {
+  async query_android(
+    { state, commit, rootState },
+    { timeperiod, filterCategories }: QueryOptions
+  ) {
     const periods = [timeperiodToStr(timeperiod)];
-    const classes = loadClassesForQuery();
+    const classes = loadClassesForQuery(rootState.categories.classes);
     const q = queries.appQuery(state.buckets.android[0], classes, filterCategories);
     const data = await this._vm.$aw.query(periods, q).catch(this.errorHandler);
     commit('query_window_completed', data[0]);
@@ -226,7 +229,7 @@ const actions = {
     { timeperiod, filterCategories, filterAFK, includeAudible }: QueryOptions
   ) {
     const periods = [timeperiodToStr(timeperiod)];
-    const classes = loadClassesForQuery();
+    const classes = loadClassesForQuery(rootState.categories.classes);
     const q = queries.fullDesktopQuery(
       state.buckets.browser,
       state.buckets.window[0],
@@ -275,7 +278,7 @@ const actions = {
   },
 
   async query_category_time_by_period(
-    { commit, state },
+    { commit, state, rootState },
     { timeperiod, filterCategories, filterAFK }: QueryOptions
   ) {
     // TODO: Needs to be adapted for Android
@@ -287,7 +290,7 @@ const actions = {
     } else {
       console.error('Unknown timeperiod');
     }
-    const classes = loadClassesForQuery();
+    const classes = loadClassesForQuery(rootState.categories.classes);
     const data = [];
     // Query one period at a time, to avoid timeout on slow queries
     for (const period of periods) {

@@ -3,9 +3,9 @@ div
   h5.d-inline-block
     div Categorization
   div.float-right
-    b-btn.ml-1(@click="restoreDefaultClasses", variant="outline-warning" size="sm")
-      icon(name="undo")
-      | Restore defaults
+    //- b-btn.ml-1(@click="restoreDefaultClasses", variant="outline-warning" size="sm")
+    //-   icon(name="undo")
+    //-   | Restore defaults
     label.btn.btn-sm.ml-1.btn-outline-primary(style="margin: 0")
       | Import
       input(type="file" @change="importCategories" hidden)
@@ -67,9 +67,9 @@ export default {
     resetClasses: async function () {
       await this.$store.dispatch('categories/load');
     },
-    restoreDefaultClasses: async function () {
-      await this.$store.commit('categories/restoreDefaultClasses');
-    },
+    // restoreDefaultClasses: async function () {
+    //   await this.$store.commit('categories/restoreDefaultClasses');
+    // },
     exportClasses: function () {
       console.log('Exporting categories...');
 

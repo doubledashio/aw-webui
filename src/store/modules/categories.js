@@ -1,12 +1,20 @@
 import _ from 'lodash';
 import {
+  // loadClasses,
   saveClasses,
-  loadClasses,
   defaultCategories,
   build_category_hierarchy,
   createMissingParents,
   annotate,
 } from '~/util/classes';
+
+// EspaceUn category to Category mapping
+const mapping = {
+  mekl_wbdc_int: 'id',
+  mekl_sify_slug: 'name',
+  mekl_wmxd_text: 'rule.regex',
+  mekl_vjwx_text: 'data.color',
+};
 
 // initial state
 const _state = {
@@ -52,7 +60,25 @@ const getters = {
 // actions
 const actions = {
   async load({ commit }) {
-    commit('loadClasses', await loadClasses());
+    // commit('loadClasses', loadClasses());
+
+    // let baseURL;
+    // if (!PRODUCTION) {
+    //   baseURL = AW_SERVER_URL || 'http://127.0.0.1:5666';
+    // }
+    // try {
+    //   // TODO: Don't think fetch is working in android, axios is available as dep
+    //   const response = await fetch(`${baseURL}/api/0/categories`);
+    //   console.log('response', response);
+    //   const data = await response.json();
+    //   commit('loadClasses', data);
+    // } catch (err) {
+    //   console.log(err);
+    //   commit('loadClasses', {});
+    // }
+
+    const categories = await this._vm.$aw.getCategories();
+    commit('loadClasses', categories);
   },
   async save({ state, commit }) {
     const r = await saveClasses(state.classes);
@@ -64,10 +90,32 @@ const actions = {
 // mutations
 const mutations = {
   loadClasses(state, classes) {
-    classes = createMissingParents(classes);
+    // classes = createMissingParents(classes);
 
-    let i = 0;
-    state.classes = classes.map(c => Object.assign(c, { id: i++ }));
+    // let i = 0;
+    // state.classes = classes.map(c => Object.assign(c, { id: i++ }));
+
+    state.classes = classes.content?.map(c =>
+      c.fields.reduce(
+        (cur, obj) => {
+          const mappingKey = mapping[obj.identifier];
+
+          if (!mappingKey) {
+            return cur;
+          }
+
+          cur = _.set(cur, mappingKey, obj.value);
+
+          if (mappingKey === 'name') {
+            cur.name_pretty = cur.name;
+            cur.name = [cur.name];
+          }
+
+          return cur;
+        },
+        { depth: 0, rule: { ignore_case: true, regex: '', type: 'regex' } }
+      )
+    );
     console.log('Loaded classes:', state.classes);
     state.classes_unsaved_changes = false;
   },
