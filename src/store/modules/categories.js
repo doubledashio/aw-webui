@@ -1,12 +1,21 @@
 import _ from 'lodash';
 import {
+  // loadClasses,
   saveClasses,
-  loadClasses,
   defaultCategories,
   build_category_hierarchy,
   createMissingParents,
   annotate,
 } from '~/util/classes';
+
+// EspaceUn category to Category mapping
+const mapping = {
+  mekl_wbdc_int: 'id',
+  mekl_sify_slug: 'name',
+  mekl_wmxd_text: 'rule.regex',
+  mekl_vjwx_text: 'data.color',
+  mekl_wofe_fk: 'parent',
+};
 
 // initial state
 const _state = {
@@ -52,7 +61,8 @@ const getters = {
 // actions
 const actions = {
   async load({ commit }) {
-    commit('loadClasses', await loadClasses());
+    const categories = await this._vm.$aw.getCategories();
+    commit('loadClasses', categories);
   },
   async save({ state, commit }) {
     const r = await saveClasses(state.classes);
@@ -64,10 +74,34 @@ const actions = {
 // mutations
 const mutations = {
   loadClasses(state, classes) {
-    classes = createMissingParents(classes);
+    const allClasses = [].concat(classes.categories?.content, classes.sub?.content);
+    state.classes = allClasses.map(c =>
+      c.fields.reduce(
+        (cur, obj) => {
+          const mappingKey = mapping[obj.identifier];
 
-    let i = 0;
-    state.classes = classes.map(c => Object.assign(c, { id: i++ }));
+          if (!mappingKey) {
+            return cur;
+          }
+
+          cur = _.set(cur, mappingKey, obj.value);
+
+          if (mappingKey === 'name') {
+            cur.name_pretty = cur.name;
+            cur.name = [cur.name];
+          } else if (mappingKey === 'parent') {
+            cur.parent = obj.value.id;
+            cur.name = [obj.value.unicode, ...cur.name];
+          }
+
+          cur.id = +cur.id;
+
+          return cur;
+        },
+        { depth: 0, rule: { ignore_case: true, regex: '', type: 'regex' } }
+      )
+    );
+    state.classes = createMissingParents(state.classes);
     console.log('Loaded classes:', state.classes);
     state.classes_unsaved_changes = false;
   },

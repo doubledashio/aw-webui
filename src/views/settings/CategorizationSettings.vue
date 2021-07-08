@@ -3,9 +3,9 @@ div
   h5.d-inline-block
     div Categorization
   div.float-right
-    b-btn.ml-1(@click="restoreDefaultClasses", variant="outline-warning" size="sm")
-      icon(name="undo")
-      | Restore defaults
+    //- b-btn.ml-1(@click="restoreDefaultClasses", variant="outline-warning" size="sm")
+    //-   icon(name="undo")
+    //-   | Restore defaults
     label.btn.btn-sm.ml-1.btn-outline-primary(style="margin: 0")
       | Import
       input(type="file" @change="importCategories" hidden)
@@ -29,13 +29,13 @@ div
     div(v-for="_class in classes_hierarchy")
       CategoryEditTree(:_class="_class")
 
-  div.row
-    div.col-sm-12
-      b-btn(@click="addClass")
-        icon.mr-2(name="plus")
-        | Add category
-      b-btn.float-right(@click="saveClasses", variant="success" :disabled="!classes_unsaved_changes")
-        | Save
+  //- div.row
+  //-   div.col-sm-12
+  //-     b-btn(@click="addClass")
+  //-       icon.mr-2(name="plus")
+  //-       | Add category
+  //-     b-btn.float-right(@click="saveClasses", variant="success" :disabled="!classes_unsaved_changes")
+  //-       | Save
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex';
@@ -67,9 +67,9 @@ export default {
     resetClasses: async function () {
       await this.$store.dispatch('categories/load');
     },
-    restoreDefaultClasses: async function () {
-      await this.$store.commit('categories/restoreDefaultClasses');
-    },
+    // restoreDefaultClasses: async function () {
+    //   await this.$store.commit('categories/restoreDefaultClasses');
+    // },
     exportClasses: function () {
       console.log('Exporting categories...');
 
