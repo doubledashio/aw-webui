@@ -66,12 +66,18 @@ div
         | A valid file to import is a JSON file from either an export of a single bucket or an export from multiple buckets.
         | If there are buckets with the same name the import will fail
     b-card(header="Export buckets")
-      b-button(:href="$aw.baseURL + '/api/0/export'",
-               :download="'aw-bucket-export.json'",
-               title="Export bucket to JSON",
-               variant="outline-secondary")
-        icon(name="download")
-        | Export all buckets as JSON
+      b-button-group(size="md")
+        b-button(:href="$aw.baseURL + '/api/0/export'",
+                :download="'aw-bucket-export.json'",
+                title="Export all buckets as JSON",
+                variant="outline-secondary")
+          icon(name="download")
+          | Export all buckets as JSON
+        b-button(@click="exportToEspaceUn()",
+                title="Export all buckets to EspaceUn",
+                variant="outline-secondary")
+          icon(name="download")
+          | Export all buckets to EspaceUn
 
 </template>
 
@@ -163,6 +169,9 @@ export default {
       const headers = { 'Content-Type': 'multipart/form-data' };
       return this.$aw.req.post('/0/import', formData, { headers });
     },
+    exportToEspaceUn: async function () {
+      return this.$aw.req.get('/0/export-espaceun');
+    }
   },
 };
 </script>
