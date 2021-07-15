@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+import { loadLanguageAsync } from './main'
+
 const Home = () => import('./views/Home.vue');
 
 // Activity views for desktop
@@ -65,5 +67,10 @@ const router = new VueRouter({
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  const lang = to.params.lang || 'fr';
+  loadLanguageAsync(lang).then(() => next());
+})
 
 export default router;

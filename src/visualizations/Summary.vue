@@ -5,7 +5,7 @@ div
   div(:style='{"visibility": visible ? "visible" : "hidden"}')
     b-button.mt-1(size="sm", variant="outline-secondary", @click="limit_ += 5")
       icon(name="angle-double-down")
-      | Show more
+      | {{ $t('more') }}
     b-button.ml-2.mt-1(v-if="limit_ != limit" size="sm", variant="outline-secondary", @click="limit_ = limit")
       icon(name="angle-double-up")
 </template>
@@ -79,7 +79,7 @@ export default {
           this.colorfunc
         );
       } else {
-        summary.set_status(el, 'Loading...');
+        summary.set_status(el, this.$t('loading'));
       }
     },
   },

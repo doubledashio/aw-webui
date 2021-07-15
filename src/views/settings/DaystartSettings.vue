@@ -2,12 +2,12 @@
 div
   div.d-sm-flex.justify-content-between
     div
-      h5.mt-1.mb-2.mb-sm-0 Start of day
+      h5.mt-1.mb-2.mb-sm-0 {{ $t('dayStart') }}
     div
       b-input(type="time" size="sm" :value="startOfDay" @change="setStartOfDay($event.target.value)")
   small
-    | The time at which days "start", since humans don't always go to bed before midnight.
-    | Set to 04:00 by default.
+    | {{ $t('startHelp1') }}
+    | {{ $t('startHelp2') }}
 </template>
 <script>
 export default {
