@@ -1,13 +1,13 @@
 <template lang="pug">
 div
-  h3.mb-0 Activity for {{ timeperiod | friendlyperiod }}
+  h3.mb-0 {{ $t('activityFor') }} {{ timeperiod | friendlyperiod }}
 
   div.mb-2
     ul.list-group.list-group-horizontal-md.mb-3(style="font-size: 0.9em; opacity: 0.7")
       li.list-group-item.pl-0.pr-3.py-0(style="border: 0")
-        | #[b Host:] {{ host }}
+        | #[b {{ $t('host') }}] {{ host }}
       li.list-group-item.pl-0.pr-3.py-0(style="border: 0")
-        | #[b Time active:] {{ $store.state.activity.active.duration | friendlyduration }}
+        | #[b {{ $t('timeActive') }}] {{ $store.state.activity.active.duration | friendlyduration }}
 
   div.mb-2.d-flex
     div
@@ -32,27 +32,27 @@ div
         b-button.px-2(:pressed.sync="showOptions", variant="outline-dark")
           icon(name="filter")
           span.d-none.d-md-inline
-            |  Filters
+            |  {{ $t('filters') }}
         b-button.px-2(@click="refresh(true)", variant="outline-dark")
           icon(name="sync")
           span.d-none.d-md-inline
-            |  Refresh
+            |  {{ $t('refresh') }}
 
   div.row(v-if="showOptions" style="background-color: #EEE;").my-3.py-3
     div.col-md-12
-      h5 Filters
+      h5 {{ $t('filters') }}
     div.col-md-6
       b-form-checkbox(v-model="filterAFK" size="sm")
-        | Exclude AFK time
+        | {{ $t('excludeAfk') }}
         icon#filterAFKHelp(name="question-circle" style="opacity: 0.4")
-        b-tooltip(target="filterAFKHelp" v-b-tooltip.hover title="Filter away time where the AFK watcher didn't detect any input.")
+        b-tooltip(target="filterAFKHelp" v-b-tooltip.hover :title="$t('afkHelp')")
       b-form-checkbox(v-model="includeAudible" :disabled="!filterAFK" size="sm")
-        | Count audible browser tab as active
+        | {{ $t('audible') }}
         icon#includeAudibleHelp(name="question-circle" style="opacity: 0.4")
-        b-tooltip(target="includeAudibleHelp" v-b-tooltip.hover title="If the active window is an audible browser tab, count as active. Requires a browser watcher.")
+        b-tooltip(target="includeAudibleHelp" v-b-tooltip.hover :title="$t('audibleHelp')")
 
     div.col-md-6.mt-2.mt-md-0
-      b-form-group(label="Show category" label-cols="5" label-cols-lg="4" style="font-size: 0.88em")
+      b-form-group(:label="$('showCat')" label-cols="5" label-cols-lg="4" style="font-size: 0.88em")
         b-form-select(v-model="filterCategory", :options="categories" size="sm")
 
 
@@ -68,9 +68,9 @@ div
         h6
           icon(name="plus")
           span.d-none.d-md-inline
-            | New view
+            | {{ $t('newView') }}
 
-  b-modal(id="new_view" ref="new_view" title="New view" @show="resetModal" @hidden="resetModal" @ok="handleOk")
+  b-modal(id="new_view" ref="new_view" :title="$t('newView')" @show="resetModal" @hidden="resetModal" @ok="handleOk")
     div.my-1
       b-input-group.my-1(prepend="ID")
         b-form-input(v-model="new_view.id")

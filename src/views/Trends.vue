@@ -6,28 +6,28 @@
 
 <template lang="pug">
 div
-  h3.mb-0 Trends for {{ timeperiod | friendlyperiod }}
+  h3.mb-0 {{ $t('trendsFor') }} {{ timeperiod | friendlyperiod }}
 
   div.mb-2
     ul.list-group.list-group-horizontal-md.mb-3(style="font-size: 0.9em; opacity: 0.7")
       li.list-group-item.pl-0.pr-3.py-0(style="border: 0")
-        | #[b Host:] {{ host }}
+        | #[b {{ $t('host') }}] {{ host }}
 
   b-alert(style="warning" show)
-    | This feature is still in early development.
+    | {{ $t('featureDev') }}
 
   div
     aw-timeline-barchart(:datasets="datasets" :height="100")
 
   div
     hr
-    h5 Options
+    h5 {{ $t('options') }}
 
     // TODO: Refactor options from Activity into component and reuse here
 
     aw-devonly
       b-btn(id="load-demo", @click="load_demo")
-        | Load demo data
+        | {{ $t('loadData') }}
 </template>
 
 <style lang="scss" scoped></style>
