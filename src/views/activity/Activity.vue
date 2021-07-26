@@ -52,7 +52,7 @@ div
         b-tooltip(target="includeAudibleHelp" v-b-tooltip.hover :title="$t('audibleHelp')")
 
     div.col-md-6.mt-2.mt-md-0
-      b-form-group(:label="$('showCat')" label-cols="5" label-cols-lg="4" style="font-size: 0.88em")
+      b-form-group(:label="$t('showCat')" label-cols="5" label-cols-lg="4" style="font-size: 0.88em")
         b-form-select(v-model="filterCategory", :options="categories" size="sm")
 
 
