@@ -131,6 +131,7 @@ div
 
 <script>
 import moment from 'moment';
+import { buildBarchartDataset } from '~/util/datasets';
 import { get_day_start_with_offset, get_today } from '~/util/time';
 import { periodLengthConvertMoment } from '~/util/timeperiod';
 import _ from 'lodash';
